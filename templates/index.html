@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<title>Help Lost Children</title>
+	</head>
+	<body>
+		<h3>First 48 hours and etc. ... Become a volunteer and etc. </h3>
+		<div id = "content">
+			<h4>List of lost children</h4>
+			{%for person in people%}
+				<li>{{person['name']|e}}</li>
+			{%endfor%}
+		</div>
+	</body>
+</html>
