@@ -9,6 +9,8 @@ function initialize() {
     navigator.geolocation.getCurrentPosition(function(position) {
       pos = new google.maps.LatLng(position.coords.latitude,
                                        position.coords.longitude);
+      document.getElementById("latbox").value = pos.lat();
+      document.getElementById("lngbox").value = pos.lng();
       map.setCenter(pos);
     }, function() {
       handleNoGeolocation(true);
