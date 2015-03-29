@@ -1,0 +1,17 @@
+html
+	head
+		meta(charset='utf-8')
+		title HackPSU
+		include add/_css
+		include add/_js
+	body
+		form
+			#map-canvas
+			fieldset
+				label(for='first_name') First Name:
+					input(type='text', name='first_name')
+				label(for='last_name') Last Name:
+					input(type='text', name='last_name')
+				label(for='tel') Cell Phone:
+					input(type='tel', name='tel')
+				button.pure-button.pure-button-primary(type='submit') Submit

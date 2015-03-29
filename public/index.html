@@ -1,0 +1,70 @@
+
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>HackPSU</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtKYV6mi9hQQ1_euQ8ROKguCD9crPUC3M"></script>
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="js/main.js"></script>
+  </head>
+  <body></body>
+  <form class="pure-form">
+    <fieldset>
+      <label for="email">Email for notifications:
+        <input type="email" name="email" placeholder="Email"/>
+      </label>
+      <input id="latbox" size="20" type="text" name="lat"/><br/>
+      <input id="lngbox" size="20" type="text" name="lng"/><br/>
+      <input type="file" name="image"/>
+      <label for="missSince">Missing Since (month and year):
+        <input type="month" name="missSince"/>
+      </label>
+      <label for="age">Age:
+        <input type="number" name="age" min="1" max="99"/>
+      </label>
+      <label for="gender">Gender:<br/>
+        <input type="radio" name="gender" value="male"/>Male
+        <input type="radio" name="gender" value="female"/>Female
+      </label>
+      <label for="race">Race:<br/>
+        <input type="radio" name="race" value="asian"/>Asian
+        <input type="radio" name="race" value="black"/>Black
+        <input type="radio" name="race" value="european"/>European
+        <input type="radio" name="race" value="other"/>Other
+      </label>
+      <label for="hairColor">Hair color:<br/>
+        <input type="radio" name="hairColor" value="blonde"/>Blonde
+        <input type="radio" name="hairColor" value="brunette"/>Brunette
+        <input type="radio" name="hairColor" value="redhead"/>Redhead
+        <input type="radio" name="hairColor" value="grays"/>Grays
+      </label>
+      <label for="eyeColor">Eye color:<br/>
+        <input type="radio" name="eyeColor" value="blue"/>Blue
+        <input type="radio" name="eyeColor" value="brown"/>Brown
+        <input type="radio" name="eyeColor" value="green"/>Green
+      </label>
+      <label for="weight">Weight:
+        <input type="number" name="weight" min="20" max="500"/>lbs
+      </label>
+      <label for="height">Height:
+        <input type="number" name="heightF" min="1" max="5"/>&apos;
+        <input type="number" name="heightI" min="1" max="100"/>&apos;&apos;
+      </label>Description:
+      <textarea rows="4" cols="50">Some additional information</textarea>
+      <div id="map-canvas" style="width:50%; height:500px"></div>
+      <button type="submit" class="pure-button pure-button-primary">Submit</button>
+    </fieldset>
+  </form>
+  <!--form
+  fieldset
+  	label(for='first_name') First Name:
+  		input(type='text', name='first_name')
+  	label(for='last_name') Last Name:
+  		input(type='text', name='last_name')
+  	label(for='tel') Cell Phone:
+  		input(type='tel', name='tel')
+  	button.pure-button.pure-button-primary(type='submit') Submit
+  -->
+</html>
