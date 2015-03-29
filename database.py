@@ -19,4 +19,12 @@ class Database:
         except pymongo.errors.OperationFailure, e:
             logging.error('Database getPeople operation failed: %s' % e)
 
+    def addPerson(self, data):
+        try:
+            collection = self._connection[self._dbName]['people']
+            new_person = {}
+
+            for key,value in data.items():
+                new_person[key] = value
+            collection.update()
 
