@@ -152,16 +152,16 @@ def processLocation(id):
                 person['lng1'] = request.form['lng']
                 person['lat1'] = request.form['lat']
                 db.updatePerson(person)
+                checkVolForPersonAfter(person,db)
+                flash('Updated coordiates')
+                return redirect(url_for('people', id = id))
             else:
                 flash("You haven't picked the location")
                 return redirect(url_for('addLocation', id = id))
-            flash('Updated coordiates')
-            return redirect(url_for('people', id = id))
         else:
             return 'User with id = {} does not exist'.format(id)
     except Exception as e:
         logging.error('addLocation(), {}:{}, {}'.format(type(e).__name__,e,str(e.args)))
-
 
 @app.route('/uploads/<filename>/')
 def uploadedFile(filename):

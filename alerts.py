@@ -27,7 +27,7 @@ def checkPeopleForVol(vol,db):
 
     for person in people:
         if time.time() - float(person['reported']) <= 48*60*60:
-            if vincenty([float(person['lat']),float(person['lng'])],[float(vol['lat']),float(vol['lng'])]).miles < distance:
+            if vincenty([float(person['lat']),float(person['lng'])],[float(vol['lat']),float(vol['lng'])]).miles < distance or ('lat1' in person and 'lng1' in person and vincenty([float(person['lat1']),float(person['lng1'])],[float(vol['lat']),float(vol['lng'])]).miles < distance):
                 text = 'Dear {}, {} went missing less than 48 hours ago in your area! Go to {}{} for details'.format(vol['firstName'],person['firstName'],url,person['_id'])
                 sendMessage(vol['tel'],text)
 
@@ -38,6 +38,15 @@ def checkVolForPerson(person,db):
     for vol in vols:
         if time.time() - float(person['reported']) <= 48*60*60:
             if vincenty([float(person['lat']),float(person['lng'])],[float(vol['lat']),float(vol['lng'])]).miles < distance:
+                text = 'Dear {}, {} went missing less than 48 hours ago in your area! Go to {}{} for details'.format(vol['firstName'],person['firstName'],url,person['_id'])
+                sendMessage(vol['tel'],text)
+
+def checkVolForPersonAfter(person,db):
+    vols = db.getVolunteers()
+
+    for vol in vols:
+        if time.time() - float(person['reported']) <= 48*60*60:
+            if vincenty([float(person['lat1']),float(person['lng1'])],[float(vol['lat']),float(vol['lng'])]).miles < distance:
                 text = 'Dear {}, {} went missing less than 48 hours ago in your area! Go to {}{} for details'.format(vol['firstName'],person['firstName'],url,person['_id'])
                 sendMessage(vol['tel'],text)
 
