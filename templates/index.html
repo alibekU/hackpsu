@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Help Lost Children</title>
+		<title>Help Missing People</title>
 	</head>
 	<body>
 	{% with messages = get_flashed_messages() %}
@@ -10,12 +10,12 @@
     			{% endfor %}
   		{% endif %}
 	{% endwith %}
-		<h4 color="green">{{message}}</h4> 
-		<h3>First 48 hours and etc. ... Become a volunteer and etc. </h3>
+	<h3>First 48 hours are the most important when it comes to a missing person. Become a volunteer to receive timely alerts when someone in your area was reported missing, access information about that person on this website, so that you can recognize a missing person, inform the authorities, and make difference.</h3><a href="{{url_for('addVolunteer')}}"><h3>Join community program!</h3></a> 
 		<div id = "content">
-			<h4>List of lost children</h4>
+			<a href="{{url_for('addPerson')}}"><h4>Report a missing person</h4></a>
+			<h4>List of missing people</h4>
 			{%for person in people%}
-				<li>{{person['firstName']|e}}</li>
+			<li><a href="{{url_for('people',id=person['_id'])}}">{{person['firstName']|e}}</a></li>
 			{%endfor%}
 		</div>
 	</body>

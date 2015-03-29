@@ -1,4 +1,6 @@
 import os
+from flask.ext.googlemaps import GoogleMaps
+from alerts import *
 import time
 from flask import Flask,flash,redirect,render_template,request,send_from_directory, url_for
 import logging
@@ -8,6 +10,7 @@ from werkzeug import secure_filename
 logging.basicConfig(filename='web.log', level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 app = Flask(__name__)
 db = Database('mydb')
+GoogleMaps(app)
 
 app.secret_key = 'xervtr'
 
@@ -24,17 +27,17 @@ def allowed_file(filename):
         logging.error('allowed_file(), {}:{}'.format(type(e).__name__, e))
 
 @app.route('/')
-def index(message=''):
+def index():
     try:
         people = db.getPeople()
-        return render_template('index.html', people = people,message = message)
+        return render_template('index.html', people = people)
     except Exception as e:
         logging.error('index(), {}:{}'.format(type(e).__name__, e))
 
 @app.route('/add_person/')
-def addPerson(message=''):
+def addPerson():
     try:
-        return render_template('add_person.html', message = message) 
+        return render_template('add_person.html') 
     except Exception as e:
         logging.error('addPerson(), {}:{}'.format(type(e).__name__, e))
 
@@ -48,7 +51,7 @@ def addVolunteer():
 @app.route('/process_volunteer',methods=['POST'])
 def processVolunteer():
     try:
-        properties = ['firstName', 'lastName', 'tel']
+        properties = ['firstName', 'lastName', 'tel', 'lng','lat']
         
         vol = {}
         
@@ -60,8 +63,10 @@ def processVolunteer():
                 flash('Property {} cannot be empty'.format(p))
                 return redirect(url_for('addVolunteer'))
             vol[p] = request.form[p]
-        
+       
         db.addVolunteer(vol)
+        checkPeopleForVol(vol,db)
+
         flash('Volunteer {} was added.'.format(vol['firstName']))
         return redirect(url_for('index'))
     except Exception as e:
@@ -88,7 +93,7 @@ def processPerson():
             if not request.form[p]:
                 flash('Property {} is missing!'.format(p))
                 return redirect(url_for('addPerson'))
-            if request.form[p] == '' or request.form[p] == 0:
+            if request.form[p] == '' or (request.form[p] == 0 and p != 'heightI'):
                 flash('Property {} cannot be empty'.format(p))
                 return redirect(url_for('addPerson'))
             person[p] = request.form[p]
@@ -106,12 +111,24 @@ def processPerson():
             return redirect(url_for('addPerson'))
        
         person['reported'] = time.time()
-        db.addPerson(person)
+        person['_id'] = db.addPerson(person)
+        checkVolForPerson(person,db)
         flash('Added {} to the list of missing people'.format(person['firstName']))
         return redirect(url_for('index'))
 
     except Exception as e:
         logging.error('processPerson(), {}:{}, {}'.format(type(e).__name__, e, str(e.args)))
+
+@app.route('/people/<id>/')
+def people(id):
+    try:
+        person = db.getPerson(id)
+        if person:
+            return render_template('person.html', person = person)
+        else:
+            return 'User with id = {} does not exist'.format(id)
+    except Exception as e:
+        logging.error('people(), {}:{}, {}'.format(type(e).__name__,e,str(e.args)))
 
 @app.route('/uploads/<filename>/')
 def uploadedFile(filename):

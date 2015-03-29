@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<title>{{person['firstName']}} {{person['lastName']}}</title>
+	</head>
+	<body>
+	{% with %}
+		{% set location=(person['lat'],person['lng']) %}
+		{% set style="width:500px;height:500px;"%}
+
+		<h3>{{person['firstName']}} {{person['lastName']}}</h3>
+		<img src="{{person['imageURL']}}" style="width:304px;height:500px">
+		<h3>Last Seen</h3>
+		{{googlemap(
+        		"simple-map",
+        		location.0, location.1,
+        		markers=[location,],
+			style = style)
+		}}
+	{% endwith %}
+	</body>
+</html>

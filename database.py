@@ -1,3 +1,4 @@
+from bson.objectid import ObjectId
 import pymongo
 import logging
 
@@ -20,6 +21,14 @@ class Database:
             logging.error('Database get %s operation failed: %s' % (name,e))
             return []
     
+    def getPerson(self,id_):
+        try:
+            id_ = ObjectId(id_)
+            return self._connection[self._dbName]['people'].find_one({'_id':id_})
+        except Exception as e:
+            logging.error('Database getPerson() operation failed: %s' % e)
+            return None
+
     def getPeople(self):
         return self.getObjects('people')
 
@@ -34,12 +43,12 @@ class Database:
             for key,value in data.items():
                 new_person[key] = value
             
-            collection.insert(new_person)
+            return collection.insert(new_person)
         except Exception as e:
             logging.error('Database add %s operation failed: %s' % (name,e))
         
     def addPerson(self, data):
-        self.addObject('people',data)
+        return self.addObject('people',data)
 
     def addVolunteer(self, data):
-        self.addObject('volunteers',data)
+        return self.addObject('volunteers',data)
