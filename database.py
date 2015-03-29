@@ -21,6 +21,16 @@ class Database:
             logging.error('Database get %s operation failed: %s' % (name,e))
             return []
     
+    def updatePerson(self,data):
+        try:
+            self._connection[self._dbName]['people'].update(
+                {"_id": data.get('_id')},
+                data,
+                upsert=False #if no such document is found, don't create a new document         
+            )
+        except Exception as e:
+                 logging.error('Database updatePerson operation failed: %s' % e)
+
     def getPerson(self,id_):
         try:
             id_ = ObjectId(id_)

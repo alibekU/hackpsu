@@ -130,6 +130,39 @@ def people(id):
     except Exception as e:
         logging.error('people(), {}:{}, {}'.format(type(e).__name__,e,str(e.args)))
 
+@app.route('/add_location/<id>/')
+def addLocation(id):
+    try:
+        person = db.getPerson(id)
+        if person:
+            firstName = person['firstName']
+            lastName = person['lastName']
+            return render_template('add_location.html', lastName = lastName, firstName = firstName,id=id)
+        else:
+            return 'User with id = {} does not exist'.format(id)
+    except Exception as e:
+        logging.error('addLocation(), {}:{}, {}'.format(type(e).__name__,e,str(e.args)))
+
+@app.route('/process_location/<id>/', methods=['POST'])
+def processLocation(id):
+    try:
+        person = db.getPerson(id)
+        if person:
+            if request.form['lng'] and request.form['lat']:
+                person['lng1'] = request.form['lng']
+                person['lat1'] = request.form['lat']
+                db.updatePerson(person)
+            else:
+                flash("You haven't picked the location")
+                return redirect(url_for('addLocation', id = id))
+            flash('Updated coordiates')
+            return redirect(url_for('people', id = id))
+        else:
+            return 'User with id = {} does not exist'.format(id)
+    except Exception as e:
+        logging.error('addLocation(), {}:{}, {}'.format(type(e).__name__,e,str(e.args)))
+
+
 @app.route('/uploads/<filename>/')
 def uploadedFile(filename):
     try:

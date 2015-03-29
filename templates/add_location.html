@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Report missing person</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtKYV6mi9hQQ1_euQ8ROKguCD9crPUC3M"></script>
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  </head>
+  <body>
+  {% with messages = get_flashed_messages() %}
+  	{% if messages %}
+    		{% for message in messages %}
+      			<p>{{ message }}</p>
+    		{% endfor %}
+  	{% endif %}
+  {% endwith %}
+  <form class="pure-form" action="{{ url_for('processLocation', id=id) }}" method="post" enctype="multipart/form-data">
+    <fieldset>
+      <input id="latbox" type="hidden" name="lat"/><br/>
+      <input id="lngbox" type="hidden" name="lng"/><br/>
+      <h3>Please indicate a location where you believe you saw {{firstName}} {{lastName}}</h3>
+      <div id="map-canvas" style="width:50%; height:500px"></div>
+      <button type="submit" class="pure-button pure-button-primary">Submit</button>
+    </fieldset>
+  </form>
+</body>
+</html>

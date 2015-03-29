@@ -9,7 +9,7 @@
 
 		<h3>{{person['firstName']}} {{person['lastName']}}</h3>
 		<img src="{{person['imageURL']}}" style="width:304px;height:500px">
-		<h3>Last Seen</h3>
+		<h3>Last Seen before missing</h3>
 		{{googlemap(
         		"simple-map",
         		location.0, location.1,
@@ -17,5 +17,19 @@
 			style = style)
 		}}
 	{% endwith %}
-	</body>
+	<a href="{{url_for('addLocation',id = person['_id'])}}">Press here if you saw this person after he/she disapperaded </a>
+	{% with %}
+		{% if person['lat1'] is defined and person['lng1'] is defined %}
+		<h3>Last seen after reported missing</h3>
+			{% set location1=(person['lat1'],person['lng1']) %}
+			{% set style="width:500px;height:500px;"%}
+			{{googlemap(
+        			"simple-map1",
+        			location1.0, location1.1,
+        			markers=[location1,],
+				style = style)
+			}}
+		{%endif%}
+	{%endwith%}
+		</body>
 </html>
