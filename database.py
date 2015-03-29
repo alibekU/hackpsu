@@ -13,18 +13,33 @@ class Database:
         except (pymongo.errors.OperationFailure, pymongo.errors.ConnectionFailure), e:
             logging.error('Problem with db connection: %s' % e)
     
+    def getObjects(self,name,query={}):
+        try:
+            return self._connection[self._dbName][name].find(query)
+        except Exception as e:
+            logging.error('Database get %s operation failed: %s' % (name,e))
+            return []
+    
     def getPeople(self):
-        try:
-            return self._connection[self._dbName]['people'].find()
-        except pymongo.errors.OperationFailure, e:
-            logging.error('Database getPeople operation failed: %s' % e)
+        return self.getObjects('people')
 
-    def addPerson(self, data):
+    def getVolunteers(self):
+        return self.getObjects('volunteers')
+
+    def addObject(self, name, data):
         try:
-            collection = self._connection[self._dbName]['people']
+            collection = self._connection[self._dbName][name]
             new_person = {}
 
             for key,value in data.items():
                 new_person[key] = value
-            collection.update()
+            
+            collection.insert(new_person)
+        except Exception as e:
+            logging.error('Database add %s operation failed: %s' % (name,e))
+        
+    def addPerson(self, data):
+        self.addObject('people',data)
 
+    def addVolunteer(self, data):
+        self.addObject('volunteers',data)

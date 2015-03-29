@@ -3,11 +3,19 @@
 		<title>Help Lost Children</title>
 	</head>
 	<body>
+	{% with messages = get_flashed_messages() %}
+  		{% if messages %}
+    			{% for message in messages %}
+      				<p>{{ message }}</p>
+    			{% endfor %}
+  		{% endif %}
+	{% endwith %}
+		<h4 color="green">{{message}}</h4> 
 		<h3>First 48 hours and etc. ... Become a volunteer and etc. </h3>
 		<div id = "content">
 			<h4>List of lost children</h4>
 			{%for person in people%}
-				<li>{{person['name']|e}}</li>
+				<li>{{person['firstName']|e}}</li>
 			{%endfor%}
 		</div>
 	</body>
