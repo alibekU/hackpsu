@@ -1,35 +1,58 @@
-<html>
-	<head>
-		<title>{{person['firstName']}} {{person['lastName']}}</title>
-	</head>
-	<body>
-	{% with %}
-		{% set location=(person['lat'],person['lng']) %}
-		{% set style="width:500px;height:500px;"%}
+<!DOCTYPE html(lang='en')>
+<head>
+  <meta charset="utf-8"/>
+  <title>Landing Page &ndash; Layout Examples &ndash; Pure</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/lost.css')}}"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtKYV6mi9hQQ1_euQ8ROKguCD9crPUC3M"></script>
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="child">
+    <img src="{{person['imageURL']}}" class="avatar">
+    <div class="textData">
+      <p class="first_name">First Name: {{person['firstName']}}</p>
+      <p class="last_name">Last Name: {{person['lastName']}}</p>
+      <p class="missing_since">Missing Since: {{person['missSince']}}</p>
+      <p class="age">Age: {{person['age']}}</p>
+      <p class="gender">Gender: {{person['gender']}}</p>
+      <p class="race">Race: {{person['race']}}</p>
+      <p class="hairColor">Hair Color: {{person['hairColor']}}</p>
+      <p class="eyeColor">Eye Color: {{person['eyeColor']}}</p>
+      <p class="height">Height: {{person['heightF']}}'{{person['heightI']}}''</p>
+      <p class="weight">Weight: {{person['weight']}}lbs</p>
+    </div>
+  </div>
+  <div class="maps">
+    {% with %}
+    {% set location=(person['lat'],person['lng']) %}
+    {% set style="height: 85%;"%}
 
-		<h3>{{person['firstName']}} {{person['lastName']}}</h3>
-		<img src="{{person['imageURL']}}" style="width:304px;height:500px">
-		<h3>Last Seen before missing</h3>
-		{{googlemap(
-        		"simple-map",
-        		location.0, location.1,
-        		markers=[location,],
-			style = style)
-		}}
-	{% endwith %}
-	<a href="{{url_for('addLocation',id = person['_id'])}}">Press here if you saw this person after he/she disapperaded </a>
-	{% with %}
-		{% if person['lat1'] is defined and person['lng1'] is defined %}
-		<h3>Last seen after reported missing</h3>
-			{% set location1=(person['lat1'],person['lng1']) %}
-			{% set style="width:500px;height:500px;"%}
-			{{googlemap(
-        			"simple-map1",
-        			location1.0, location1.1,
-        			markers=[location1,],
-				style = style)
-			}}
-		{%endif%}
-	{%endwith%}
-		</body>
-</html>
+    <h3>{{person['firstName']}} {{person['lastName']}}</h3>
+    <h3>Last Seen before missing</h3>
+    {{googlemap(
+            "simple-map",
+            location.0, location.1,
+            markers=[location,],
+      style = style)
+    }}
+  {% endwith %}
+  <a href="{{url_for('addLocation',id = person['_id'])}}">Press Here If you saw this person after one disappeard</a>
+    {% with %}
+    {% if person['lat1'] is defined and person['lng1'] is defined %}
+    <h3>Last seen after reported missing</h3>
+      {% set location1=(person['lat1'],person['lng1']) %}
+      {% set style="\height: 85%;"%}
+      {{googlemap(
+              "simple-map1",
+              location1.0, location1.1,
+              markers=[location1,],
+        style = style)
+      }}
+    {%endif%}
+  {%endwith%}
+  </div>
+</body>

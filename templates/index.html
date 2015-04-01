@@ -1,22 +1,38 @@
-<html>
-	<head>
-		<title>Help Missing People</title>
-	</head>
-	<body>
-	{% with messages = get_flashed_messages() %}
-  		{% if messages %}
-    			{% for message in messages %}
-      				<p>{{ message }}</p>
-    			{% endfor %}
-  		{% endif %}
-	{% endwith %}
-	<h3>First 48 hours are the most important when it comes to a missing person. Become a volunteer to receive timely alerts when someone in your area was reported missing, access information about that person on this website, so that you can recognize a missing person, inform the authorities, and make difference.</h3><a href="{{url_for('addVolunteer')}}"><h3>Join community program!</h3></a> 
-		<div id = "content">
-			<a href="{{url_for('addPerson')}}"><h4>Report a missing person</h4></a>
-			<h4>List of missing people</h4>
-			{%for person in people%}
-			<li><a href="{{url_for('people',id=person['_id'])}}">{{person['firstName']|e}}</a></li>
-			{%endfor%}
+<!DOCTYPE html(lang='en')>
+<head>
+  <meta charset="utf-8"/>
+  <title>Landing Page &ndash; Layout Examples &ndash; Pure</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtKYV6mi9hQQ1_euQ8ROKguCD9crPUC3M"></script>
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          {% for message in messages %}
+              <p>{{ message }}</p>
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
+  <div class="title">48 Hours</div>
+  <div class="text">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First 48 hours are the most important when it comes to finding a missing person. Become a volunteer to receive timely alerts when someone in your area was reported missing, access information about that person on this website, so that you can recognize a missing person, inform the authorities, and make difference.</p>
+  </div>
+  <div class="firstBox">
+    <a href="{{url_for('addPerson')}}"><button class="btn btn-danger">Report Now</button></a>
+    <p>There is a community of people that are willing to help you find your loved one</p>
+  </div>
+  <div class="secondBox">
+    <a href="{{url_for('addVolunteer')}}"><button class="btn btn-success">Be a volunteer</button></a>
+    <p>Join the community that makes difference</p>
+  </div>
+  <div class="lostList">
+	  <h4> Missing people now </h4>
+  {%for person in people%}
+  			<li><a href="{{url_for('people',id=person['_id'])}}">{{person['firstName']|e}}</a></li>						{%endfor%}
 		</div>
-	</body>
-</html>
+			</body>
